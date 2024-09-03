@@ -1,0 +1,52 @@
+﻿@model SalesListViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h2>Quarterly Sales</h2>
+
+<div class="col-md-4">
+    <form asp-action="Index" method="post">
+        <div class="mb-3">
+            <label class="form-label">Employee:</label>
+            <select asp-for="EmployeeId" class="form-select"
+                    asp-items="@(new SelectList(Model.Employees, "EmployeeId", "Fullname"))">
+                <option value="0"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
+<div class="row">
+
+    <div class="col-md-10">
+
+        <table class="table table-bordered table-striped mt-2">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Quarter</th>
+                    <th>Employee</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Sales sales in Model.Sales)
+                {
+
+                    <tr>
+                        <td>@sales.Year</td>
+                        <td>@sales.Quarter</td>
+                        <td>@sales.Employee.Fullname</td>
+                        <td>@String.Format("{0:c}", @sales.Amount)</td>
+                    </tr>
+                }
+                <tr>
+                    <td>Total Sales</td>
+                    <td></td>
+                    <td></td>
+                    <td>@String.Format("{0:c}", @Model.Sales.Sum(s => s.Amount))</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div></div>
